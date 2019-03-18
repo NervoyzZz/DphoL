@@ -1,0 +1,11 @@
+# IDEs
+.idea/
+
+# object files
+__pycache__/
+*.py[cod]
+*$py.class
+*.o
+*.a
+*.so
+*.swp
