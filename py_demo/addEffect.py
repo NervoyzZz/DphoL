@@ -1,6 +1,29 @@
 import cv2
 import argparse
 
+#Effects
+def applyeffect(image,effect,power):
+    #-------------------------------------------------------------------------------------------------------------------
+    #Список эффектов. Можно до посинения добавлять новые не меняя основной код. Не уверен насколько правильно делать так
+    Effects = [
+        lambda image, power: cv2.blur(image, (power, power)),              #effect = 0
+        lambda image, power: cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)       #effect = 1
+    ]
+    #-------------------------------------------------------------------------------------------------------------------
+    if effect>len(Effects)-1 or effect<0:
+        raise IOError("Unknown filter: check variable 'effect'. List index out of range")
+
+    #Старый способ через if/elif
+    """
+    if effect == 0:
+        image = cv2.blur(image, (power, power))
+    elif effect == 1:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    else:
+        raise IOError("Unknown filter: check variable 'effect'")
+    """
+    return image
+
 def main(parser):
     """
     --------------------------------------------------------------------------------------
@@ -36,12 +59,7 @@ def main(parser):
     image = cv2.imread(pathIn)
 
     #Apply effect
-    if effect == 0:
-        image = cv2.blur(image, (power, power))
-    elif effect == 1:
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    else:
-        raise IOError("Unknown filter: check variable 'effect'")
+    image = applyeffect(image, effect, power)
 
     #Save
     cv2.imwrite(pathOut, image)
