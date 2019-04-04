@@ -1,6 +1,7 @@
 import cv2
+import argparse
 
-def addEffect(pathIn, effect=0, power=1, pathOut='', show=False):
+def main(parser):
     """
     --------------------------------------------------------------------------------------
     addEffect(pathIn, effect=0, power=1, pathOut='', show=False)
@@ -21,17 +22,12 @@ def addEffect(pathIn, effect=0, power=1, pathOut='', show=False):
     --------------------------------------------------------------------------------------
     """
 
-    #Check variables types
-    if type(pathIn) != str:
-        raise IOError("Wrong type of pathIn")
-    if type(effect) != int:
-        raise IOError("Wrong type of effect")
-    if type(power) != int:
-        raise IOError("Wrong type of power")
-    if type(pathOut) != str:
-        raise IOError("Wrong type of pathOut")
-    if type(show) != bool:
-        raise IOError("Wrong type of show")
+    #Import variables from parser
+    pathIn = parser.pathIn
+    effect = parser.effect
+    power = parser.power
+    pathOut = parser.pathOut
+    show = parser.show
 
     if pathOut == '':
         pathOut = pathIn
@@ -51,6 +47,22 @@ def addEffect(pathIn, effect=0, power=1, pathOut='', show=False):
     cv2.imwrite(pathOut, image)
 
     #Show
-    if show == True:
+    if show:
         cv2.imshow("Image", image)
-        cv2.waitKey(0)
+        cv2.waitKey()
+        cv2.destroyAllWindows()
+
+def args_parse():
+    parcer = argparse.ArgumentParser()
+
+    #parcer.add_argument('--pathIn',default='G:/Users/Ruslan/PycharmProjects/DphoL/py_demo/matrix-sunglasses.jpg',type=str)
+    parcer.add_argument('--pathIn', type=str)
+
+    parcer.add_argument('--effect','-e',    default=0, type=int)
+    parcer.add_argument('--power','-p',     default=1, type=int)
+    parcer.add_argument('--pathOut','-Out', default='', type=str)
+    parcer.add_argument('--show','-s',      default=True, type=bool)
+    return parcer.parse_args()
+
+if __name__ == "__main__":
+    main(args_parse())
